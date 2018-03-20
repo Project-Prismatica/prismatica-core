@@ -1,0 +1,48 @@
+syntax = "proto3";
+//
+// Service definition for all event delivery in the system
+//
+
+import "google/protobuf/timestamp.proto";
+
+package prismatica.official;
+
+// Events which are dropped off
+message Event {
+
+    //
+    // Fully qualified name of the event being delivered
+    //
+    // ex. github.com/mrwinstead/my-project/my-event
+    //
+    string fullyQualifiedName = 1;
+
+    // Content of the event for the event listener to handle
+    bytes payload = 2;
+
+    // When the timestamp was created
+    google.protobuf.Timestamp created = 3;
+}
+
+// Event delivery status
+message EventDelivery {
+    enum DeliveryStatus {
+        ACCEPTED = 0;
+        UNKNOWN_EVENT_NAME = 1;
+        ERROR_NO_CONTENT = 2;
+        EVENT_PARSE_ERROR = 3;
+    }
+
+    // State of ingest of the event
+    DeliveryStatus status = 1;
+
+    // If the application wishes to event status information
+    string hint = 2;
+
+    // When the timestamp was acknowleged
+    google.protobuf.Timestamp acknowleged = 3;
+}
+
+service PrimaticaEventListener {
+    rpc Notify(Event) returns (EventDelivery) {}
+}

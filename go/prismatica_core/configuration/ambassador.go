@@ -8,7 +8,7 @@ import (
 
 func HandleAmbassadorConfiguration(sourceDir string, destinationDir string) {
 
-	cmd := exec.Command("cp", "-rv", sourceDir + "/",
+	cmd := exec.Command("cp", "-rv", sourceDir + "/*",
 		destinationDir + "/")
 
 	log.WithFields(log.Fields{"command": cmd.Path, "args": cmd.Args,
@@ -22,6 +22,7 @@ func HandleAmbassadorConfiguration(sourceDir string, destinationDir string) {
 		log.WithFields(log.Fields{"error": err, "output": string(output)}).
 			Error("could not copy configuration")
 	} else {
+		cmd.Wait()
 		log.Info("copied ambassador configuration")
 	}
 

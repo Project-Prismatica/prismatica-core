@@ -6,7 +6,7 @@ Use the ```prismatica_grpc``` package:
 
 ```go
 import (
-	"github.com/Project-Prismatica/prismatica-core/go"
+	"github.com/Project-Prismatica/prismatica-core/go/prismatica_grpc"
 )
 ```
 

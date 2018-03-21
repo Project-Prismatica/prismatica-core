@@ -1,5 +1,7 @@
 # prismatica-core
 
+[![Docker Repository on Quay](https://quay.io/repository/project-prismatica/prismatica-core/status "Docker Repository on Quay")](https://quay.io/repository/project-prismatica/prismatica-core)
+
 # Go usage:
 
 Use the ```prismatica_grpc``` package:

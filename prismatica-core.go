@@ -24,19 +24,23 @@ func populateProgramArguments() (args programArguments) {
 
 	env.Parse(&args)
 
-	flag.StringVar(&args.AmbassadorConfigurationDir,
-		"ambassador-config-dir",
-		args.AmbassadorConfigurationDir,
-		"root directory of Ambassador's configuration directory " +
-		"[CORE_AMBASSADOR_CONFIG_DIR]",
+	if len(args.AmbassadorConfigurationDir) == 0 {
+		flag.StringVar(&args.AmbassadorConfigurationDir,
+			"ambassador-config-dir",
+			"",
+			"root directory of Ambassador's configuration directory "+
+				"[CORE_AMBASSADOR_CONFIG_DIR]",
 		)
+	}
 
-	flag.StringVar(&args.AmbassadorConfigurationSource,
-		"ambassador-config-source-dir",
-		args.AmbassadorConfigurationSource,
-		"root directory of the sources for Ambassador's configuration " +
-		"directory[CORE_AMBASSADOR_SOURCE_CONFIG_DIR]",
-	)
+	if len(args.AmbassadorConfigurationSource) == 0 {
+		flag.StringVar(&args.AmbassadorConfigurationSource,
+			"ambassador-config-source-dir",
+			"",
+			"root directory of the sources for Ambassador's configuration " +
+			"directory[CORE_AMBASSADOR_SOURCE_CONFIG_DIR]",
+		)
+	}
 
 	flag.BoolVar(&args.LogDebug,"debug", args.LogDebug,
 		"use debug log level [CORE_DEBUG]")
@@ -66,12 +70,11 @@ func main() {
 	log.WithFields(log.Fields{"runtime_arguments": runtimeArguments}).
 		Info("prismatica-core starting")
 
-	configuration.HandleAmbassadorConfiguration(
-		runtimeArguments.AmbassadorConfigurationSource,
-		runtimeArguments.AmbassadorConfigurationDir)
-
 	for true {
-		time.Sleep(3600)
+		configuration.HandleAmbassadorConfiguration(
+			runtimeArguments.AmbassadorConfigurationSource,
+			runtimeArguments.AmbassadorConfigurationDir)
+		time.Sleep(time.Second * 5)
 	}
 
 	log.Info("prismatica-core shutting down")
